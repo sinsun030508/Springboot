@@ -9,6 +9,7 @@ import java.awt.*;
 public class StartController {
 
     @GetMapping("/start")
+
     public Point start() {
         Point p = new Point(10,20);
 
