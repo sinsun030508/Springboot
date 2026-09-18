@@ -27,7 +27,7 @@ spring:
   jpa:
     open-in-view: true      # JPA 영속성 컨텍스트를 뷰까지 유지할지 여부
     hibernate:
-      ddl-auto: create      # create, update, ...
+      ddl-auto: update      # create: 실행 시킬때 마다 지움, update: 값을 유지, ...
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # 카멜케이스를 언더스코어로 변환
     show-sql: true          # SQL 출력 여부
