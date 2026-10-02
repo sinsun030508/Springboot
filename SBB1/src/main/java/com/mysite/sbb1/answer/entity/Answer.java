@@ -30,4 +30,8 @@ public class Answer {
     private Question question;
 
 
+   /* public void setContent(String s) { //다시 한번 봐야 됨
+        this.countent = s;
+
+    }*/
 }

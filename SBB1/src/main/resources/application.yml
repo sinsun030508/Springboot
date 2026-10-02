@@ -12,6 +12,13 @@ spring:
     restart:
       enabled: true
 
+    liveereload:
+      enabled: ture
+
+    thymeleaf:
+      cache: false
+
+
   ####################################
   # MySQL 설정
   ####################################
