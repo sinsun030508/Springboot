@@ -1,15 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="http://localhost:35729/livereload.js?snipver=1"></script>
-</head>
-<body>
-    <h1>질문 리스트123</h1>
-    <h3 th:text="${aaa}">데이터</h3>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
 
+<div layout:fragment="content" class="container my-3">
 
+    <h2 class="h3 fw-bold mb-4">질문 리스트123</h2>
 
-</body>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped mb-0">
+
+            <thead class="table-dark">
+            <tr>
+                <th scope="col" class="py-3 px-4">제목</th>
+                <th scope="col" class="py-3 px-4" style="width: 220px;">
+                    작성일
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="question : ${list}">
+                <td class="py-3 px-4">
+                    <a th:href="@{/question/{id}(id=${question.id})}"
+                       th:text="${question.subject}"
+                       class="text-decoration-none">
+                        제목
+                    </a>
+                </td>
+
+                <td class="py-3 px-4 text-secondary"
+                    th:text="${#temporals.format(question.created, 'yyyy-MM-dd')}">
+                    작성일
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(list)}">
+                <td colspan="2" class="text-center py-5 text-secondary">
+                    등록된 질문이 없습니다.
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
 </html>

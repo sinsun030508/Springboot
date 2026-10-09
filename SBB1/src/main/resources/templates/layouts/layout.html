@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신선호 SBB</title>
+
+    <!-- 공통 Bootstrap CSS (로컬 정적 리소스: src/main/resources/static/css/...) -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="http://localhost:35729/livereload.js?snipver=1"></script>
+
+    <!-- 개별 페이지 전용 CSS 영역 -->
+    <th:block layout:fragment="css"></th:block>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Header 영역 (필요 시 주석 해제하여 fragment 경로 지정) -->
+ <header th:replace="~{fragments/header :: header}"></header>
+
+<!-- 개별 페이지 본문 영역 -->
+<main class="flex-grow-1" layout:fragment="content">
+    <!-- 각 화면 뷰 템플릿의 본문이 이 자리에 삽입됩니다. -->
+</main>
+
+<!-- Footer 영역 (필요 시 주석 해제하여 fragment 경로 지정) -->
+<!--<footer th:replace="~{fragments/footer :: footer}"></footer>-->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+<!-- 공통 Bootstrap JS 번들 (로컬 정적 리소스: src/main/resources/static/js/...) -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<!-- 개별 페이지 전용 Script 영역 -->
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

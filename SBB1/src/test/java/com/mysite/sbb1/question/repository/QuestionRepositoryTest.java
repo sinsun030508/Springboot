@@ -24,7 +24,7 @@ class QuestionRepositoryTest {
         System.out.println("=========== 스프링부트 테스트 연습.");
     }
 
-    //@Test
+    @Test
     //@Transactional //롤백
 
     void testSave(){

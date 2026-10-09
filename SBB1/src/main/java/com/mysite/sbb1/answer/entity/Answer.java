@@ -29,6 +29,10 @@ public class Answer {
     @JoinColumn(name = "question_id", nullable = false) //포린키
     private Question question;
 
+    public void setContent(String s) {
+
+    }
+
 
    /* public void setContent(String s) { //다시 한번 봐야 됨
         this.countent = s;
