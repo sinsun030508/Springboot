@@ -2,7 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<th:block layout:fragment="script">
+    <style>
+        .fledError{
+            color:red;
 
+        }
+    </style>
+</th:block>
 
 <div layout:fragment="content" class="container my-3">
     <!-- 질문 상세 Card -->
@@ -59,6 +66,7 @@
 
         <div class="card-body">
             <form th:action="@{|/answer/create/${question.id}|}"
+                  th:object="${answerDto}"
                   method="post">
 
                 <div class="mb-3">
@@ -71,7 +79,10 @@
                               id="content"
                               name="content"
                               placeholder="답변을 입력해 주세요."
-                              required></textarea>
+                              th:field="*{content}"
+                              >
+                    </textarea>
+                    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fledError">error</p>
                 </div>
 
                 <div class="text-end">

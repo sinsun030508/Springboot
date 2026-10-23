@@ -21,7 +21,7 @@
             </thead>
 
             <tbody>
-            <tr th:each="question : ${list}">
+            <tr th:each="question : ${paging}">
                 <td class="py-3 px-4">
                     <a th:href="@{|/question/${question.id}|}"
                        th:text="${question.subject}"

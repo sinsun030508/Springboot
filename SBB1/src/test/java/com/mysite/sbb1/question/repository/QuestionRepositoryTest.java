@@ -1,6 +1,8 @@
 package com.mysite.sbb1.question.repository;
 
+import com.mysite.sbb1.question.dto.QuestionDto;
 import com.mysite.sbb1.question.entity.Question;
+import com.mysite.sbb1.question.service.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ class QuestionRepositoryTest {
 
     @Autowired  //에너테이션을 통해 스프링 의존성 주입기능 사용
     private QuestionRepository questionRepository;//di 디펜던지 인덱서 자동 객체 생성
+
+    @Autowired
+    private QuestionService questionService;
 
     @Test
     void test(){
@@ -98,5 +103,17 @@ class QuestionRepositoryTest {
 
         Question saved = questionRepository.save(question);
         System.out.println("저장 후 : " + saved);
+    }
+
+    @Test
+    void testManyData(){
+        for (int i = 0; i < 300; i++) {
+            QuestionDto questionDto =  QuestionDto.builder()
+                    .subject("테스트 데이터[" + i + "]")
+                    .content("내용 : [" + i + "]")
+                    .build();
+            questionService.createeQuestion(questionDto);
+
+        }
     }
 }

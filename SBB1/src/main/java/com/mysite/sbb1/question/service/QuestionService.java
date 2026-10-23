@@ -1,5 +1,6 @@
 package com.mysite.sbb1.question.service;
 
+import com.mysite.sbb1.question.dto.QuestionDto;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -7,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import com.mysite.sbb1.question.entity.Question;
 import com.mysite.sbb1.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,15 +24,17 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        List<Question> questionList = questionRepository.findAll();
-        return questionList;  // alt + shift + i (inline variable)로 간략화 가능
+    public Page<Question> getList(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Question> paging = questionRepository.findAll(pageable);
+        return paging;  // alt + shift + i (inline variable)로 간략화 가능
     }
 
-    public void createeQuestion(String subject, String content) {
+    public void createeQuestion(QuestionDto questionDto) {
         Question question = Question.builder()
-                .subject(subject)
-                .content(content)
+                .subject(questionDto.getSubject())
+                .content(questionDto.getContent())
                 .created(LocalDateTime.now())
                 .build();
         questionRepository.save(question);
