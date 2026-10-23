@@ -20,6 +20,6 @@ private final QuestionService questionService;
 final 중요
 
 
-7주차
+8주차
 Validation 라이브러리 : Notnull등등 기능 제공
 DTO사용
