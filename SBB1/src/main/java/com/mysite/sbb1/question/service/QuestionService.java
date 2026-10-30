@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,8 @@ public class QuestionService {
 
     public Page<Question> getList(int page) {
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("created").descending());
+        //Pageable pageable = PageRequest.of(page, 10, Sort.Direction.DESC, "created");
         Page<Question> paging = questionRepository.findAll(pageable);
         return paging;  // alt + shift + i (inline variable)로 간략화 가능
     }
