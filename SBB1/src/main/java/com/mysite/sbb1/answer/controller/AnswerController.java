@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * 답변 등록 요청을 처리하는 컨트롤러
+ * - 답변을 달 질문을 찾아야 하므로 QuestionService도 함께 주입받음
+ */
 @Controller //컨트롤러 역활 지정
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +25,13 @@ public class AnswerController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
+
+    /**
+     * POST /answer/create/{id}  (답변 등록 처리, {id}는 질문 번호)
+     * - 질문 상세 화면의 답변 등록 폼에서 호출됨
+     * - 검증 실패(내용이 비어 있음) → 질문 정보를 다시 담아서 상세 화면으로 돌아가 에러 메시지 표시
+     * - 검증 성공 → 답변 저장 후 해당 질문 상세 화면으로 이동(redirect)
+     */
     @PostMapping("/answer/create/{id}")//post방식이라
     public String createAnswer(@PathVariable("id") Long id,
                                @Valid AnswerDto answerDto, BindingResult bindingResult,

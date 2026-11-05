@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<!-- 모든 페이지 위쪽에 들어가는 공통 메뉴(네비게이션 바)
+     layout.html에서 th:replace="~{fragments/header :: header}"로 불러옴 -->
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">신선호 SBB</a>
 
+            <!-- 화면이 좁을 때(모바일) 메뉴를 접었다 펴는 버튼 -->
             <button class="navbar-toggler" type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -45,6 +48,7 @@
                     </li>
                 </ul>
 
+                <!-- 검색창 (아직 기능은 연결되지 않은 화면용) -->
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search"
                            placeholder="Search" aria-label="Search"/>
