@@ -144,8 +144,8 @@ public class Answer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String countent;            // ← 저장소 원본 철자 그대로 (아래 주의 참고)
+    @Column(name = "countent", columnDefinition = "TEXT") // DB 컬럼 이름은 기존 그대로 유지
+    private String content;             // ← 원래는 필드 이름도 countent(오타)였음 (아래 주의 참고)
 
     private LocalDateTime created;
 
@@ -369,9 +369,9 @@ SBB1/src/main/resources
 
 ---
 
-## ⚠️ 주의할 점 (지금 코드에 있는 문제)
+## ⚠️ 주의할 점
 
-1. **`Answer.setContent()`가 아무 일도 하지 않습니다.** 필드 이름이 `countent`(오타)이고, 빈 `setContent` 메서드가 직접 들어가 있습니다. 그래서 `AnswerRespositoryTest`에서 `setContent(...)`로 넣은 내용은 저장되지 않습니다. 필드 이름을 `content`로 바꾸고 빈 메서드를 지우는 것을 권합니다. 이때 `AnswerService`의 `.countent(...)`와 `detail.html`의 `answer.countent`도 함께 바꿔야 합니다.
-2. **`application.yml` 오타**: `liveereload: enabled: ture` → `livereload: enabled: true`. 또 `thymeleaf: cache: false`가 `devtools` 아래에 들여쓰기되어 있어서 적용되지 않습니다. `spring.thymeleaf.cache`가 되도록 `devtools`와 같은 깊이로 옮겨야 합니다.
+1. ~~**`Answer.setContent()`가 아무 일도 하지 않습니다.**~~ → **해결됨.** 필드 이름 `countent`(오타)를 `content`로 바꾸고 빈 `setContent` 메서드를 지웠습니다. `AnswerService`의 `.content(...)`와 `detail.html`의 `answer.content`도 함께 바꿨습니다. 기존 답변 데이터를 그대로 쓰기 위해 DB 컬럼 이름은 `@Column(name = "countent")`로 유지합니다.
+2. ~~**`application.yml` 오타**~~ → **해결됨.** `liveereload: enabled: ture`를 `livereload: enabled: true`로 고치고, `devtools` 아래에 잘못 들어가 있던 `thymeleaf: cache: false`를 `spring.thymeleaf.cache` 위치(`devtools`와 같은 깊이)로 옮겼습니다.
 3. `detail.html`과 `inputForm.html`의 `<style>`이 `layout:fragment="script"` 안에 있습니다. `layout:fragment="css"`에 넣는 것이 맞습니다.
 4. 테스트가 DB 상태에 의존합니다. `findById(1L)`, `size()==2` 같은 검사는 `testManyData`로 300개를 넣은 뒤에는 실패합니다. 처음부터 다시 만들 때는 테스트를 하나씩 순서대로 실행하세요.

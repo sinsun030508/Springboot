@@ -20,7 +20,7 @@ public class AnswerService {
 
     public void createAnswer(Question question, AnswerDto answerDto) {
         Answer answer = Answer.builder()
-                .countent(answerDto.getContent())
+                .content(answerDto.getContent())
                 .question(question)
                 .created(LocalDateTime.now())
                 .build();

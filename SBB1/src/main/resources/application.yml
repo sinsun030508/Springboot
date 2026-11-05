@@ -12,11 +12,11 @@ spring:
     restart:
       enabled: true
 
-    liveereload:
-      enabled: ture
+    livereload:
+      enabled: true
 
-    thymeleaf:
-      cache: false
+  thymeleaf:
+    cache: false
 
 
   ####################################

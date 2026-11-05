@@ -19,8 +19,8 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT")
-    private String countent;
+    @Column(name = "countent", columnDefinition = "TEXT") // DB 컬럼 이름은 기존 그대로 유지
+    private String content;
 
     private LocalDateTime created;
 
@@ -28,14 +28,4 @@ public class Answer {
     @ManyToOne(fetch = FetchType.LAZY)  //디폴트는 LAZY  M:1관계
     @JoinColumn(name = "question_id", nullable = false) //포린키
     private Question question;
-
-    public void setContent(String s) {
-
-    }
-
-
-   /* public void setContent(String s) { //다시 한번 봐야 됨
-        this.countent = s;
-
-    }*/
 }
