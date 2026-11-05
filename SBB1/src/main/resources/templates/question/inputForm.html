@@ -6,8 +6,9 @@
 <!-- 질문 등록 화면 ( GET /question/create )
      입력한 값은 POST /question/create 로 전송되고, 검증에 실패하면 이 화면이 에러 메시지와 함께 다시 보임 -->
 
-<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일 -->
-<th:block layout:fragment="script">
+<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일
+     layout.html <head> 안의 css 영역(layout:fragment="css")에 들어감 -->
+<th:block layout:fragment="css">
     <style>
         .fledError{
             color:red;

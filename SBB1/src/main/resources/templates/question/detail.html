@@ -5,8 +5,9 @@
 <!-- 질문 상세 화면 ( /question/{id} )
      컨트롤러에서 넘겨준 question(질문 + 답변 목록)과 answerDto(답변 입력 폼)를 사용 -->
 
-<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일 -->
-<th:block layout:fragment="script">
+<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일
+     layout.html <head> 안의 css 영역(layout:fragment="css")에 들어감 -->
+<th:block layout:fragment="css">
     <style>
         .fledError{
             color:red;
