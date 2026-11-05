@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
+<!-- 질문 등록 화면 ( GET /question/create )
+     입력한 값은 POST /question/create 로 전송되고, 검증에 실패하면 이 화면이 에러 메시지와 함께 다시 보임 -->
+
+<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일 -->
 <th:block layout:fragment="script">
     <style>
         .fledError{
@@ -14,6 +18,8 @@
 
 <div layout:fragment="content" class="container my-3">
     <h2>질문 등록</h2>
+    <!-- th:object="${questionDto}" → 아래 *{subject}, *{content}는 questionDto의 필드를 뜻함
+         th:field는 id, name, value를 자동으로 채워 주기 때문에 검증 실패 시 입력했던 값이 그대로 남음 -->
     <form th:action="@{/question/create}" th:object="${questionDto}" method="post">
 
         <!-- 제목 -->
@@ -26,6 +32,7 @@
                    th:field="*{subject}"
                    placeholder="제목을 입력하세요."
                    required>
+            <!-- 제목이 비었거나 150자를 넘으면 QuestionDto에 적은 에러 메시지를 표시 -->
             <p th:if="${#fields.hasErrors('subject')}"
                class="fledError"
                th:errors="*{subject}">error</p>

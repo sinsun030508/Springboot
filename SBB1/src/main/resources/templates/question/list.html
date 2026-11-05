@@ -8,6 +8,7 @@
 
     <h2 class="mb-4">질문 리스트</h2>
 
+    <!-- 질문 목록 화면 ( /question/list ) : 컨트롤러에서 넘겨준 paging(한 페이지 분량의 질문)을 표로 보여줌 -->
     <table class="table table-hover align-middle">
         <thead class="table-dark">
         <tr>
@@ -18,12 +19,15 @@
         </thead>
 
         <tbody>
+        <!-- paging에 담긴 질문을 하나씩 꺼내 한 줄(tr)씩 출력. loop.index는 0부터 시작하는 반복 순서 -->
         <tr th:each="question, loop : ${paging}">
+            <!-- 번호 = 전체 개수 - (현재 페이지 × 페이지당 개수) - 반복 순서 → 최신 글이 가장 큰 번호 -->
             <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index }"></td>
             <td>
                 <a th:href="@{|/question/${question.id}|}"
                    th:text="${question.subject}">게시글 제목
                 </a>
+                <!-- 답변이 1개 이상이면 제목 옆에 답변 개수 배지 표시 -->
                 <span th:if="${#lists.size(question.answerList) > 0}"
                       th:text="${#lists.size(question.answerList)}"
                       class="badge bg-primary"></span>
@@ -83,6 +87,7 @@
         </th:block>
     </div>
     <!-- 페이징 기능 종료 -->
+    <!-- 페이지 버튼을 누르면 아래 스크립트가 page 값을 채운 뒤 이 폼을 GET /question/list?page=번호 로 전송 -->
     <form th:action="@{/question/list}" method="get" id="searchForm">
         <input type="hidden" id="page" name="page"
                th:value="${paging.number}">
