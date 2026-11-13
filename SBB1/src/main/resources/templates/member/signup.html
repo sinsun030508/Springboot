@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<th:block layout:fragment="css">
+    <style>.fieldError { color: #bd2130; }</style>
+</th:block>
+
+<div layout:fragment="content" class="container my-3">
+    <div class="my-3 border-bottom">
+        <div><h4>회원가입</h4></div>
+    </div>
+
+    <form th:action="@{/member/signup}" th:object="${memberDto}" method="post">
+        <!-- 사용자ID -->
+        <div class="mb-3">
+            <label for="username" class="form-label">사용자ID</label>
+            <input type="text" th:field="*{username}" id="username" class="form-control">
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="fieldError"></p>
+        </div>
+
+        <!-- 비밀번호 -->
+        <div class="mb-3">
+            <label for="password1" class="form-label">비밀번호</label>
+            <input type="password" th:field="*{password1}" id="password1" class="form-control">
+            <p th:if="${#fields.hasErrors('password1')}" th:errors="*{password1}" class="fieldError"></p>
+        </div>
+
+        <!-- 비밀번호 확인 -->
+        <div class="mb-3">
+            <label for="password2" class="form-label">비밀번호 확인</label>
+            <input type="password" th:field="*{password2}" id="password2" class="form-control">
+            <p th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}" class="fieldError"></p>
+        </div>
+
+        <!-- 이메일 -->
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+            <input type="email" th:field="*{email}" id="email" class="form-control">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
+        </div>
+
+        <!-- 성별 (라디오) -->
+        <div class="mb-3">
+            <label class="form-label d-block">성별</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{gender}" id="genderMale" value="MALE">
+                <label class="form-check-label" for="genderMale">남성</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" th:field="*{gender}" id="genderFemale" value="FEMALE">
+                <label class="form-check-label" for="genderFemale">여성</label>
+            </div>
+            <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="fieldError"></p>
+        </div>
+
+        <!-- 학과 (드롭다운) -->
+        <div class="mb-3">
+            <label for="department" class="form-label">학과</label>
+            <select th:field="*{department}" id="department" class="form-select">
+                <option value="" disabled selected>학과를 선택하세요</option>
+                <option value="CSE">컴퓨터시스템공학과</option>
+                <option value="AI">인공지능학과</option>
+                <option value="ELECTRICAL">전기공학과</option>
+                <option value="MECHANICAL">기계공학과</option>
+            </select>
+            <p th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="fieldError"></p>
+        </div>
+
+        <!-- 등록 확인(체크박스) -->
+        <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" th:field="*{registration}" id="registration">
+            <label class="form-check-label" for="registration">
+                (필수) 현재 학기 등록 여부 확인.
+            </label>
+            <p th:if="${#fields.hasErrors('registration')}" th:errors="*{registration}" class="fieldError"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">회원가입</button>
+    </form>
+</div>
+<!-- $ 형식을 사용하기 전에는 반드시 jQuery 추가 필요!! -->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(function(){
+            let errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){ alert(errorMessage); }
+        });
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,53 @@
+####################################
+# Port & Project Name
+####################################
+server:
+  port: 8080                    # 포트 번호
+
+spring:
+  application:
+    name: SBB
+
+  devtools:
+    restart:
+      enabled: true
+
+    livereload:
+      enabled: true
+
+  thymeleaf:
+    cache: false
+
+
+  ####################################
+  # MySQL 설정
+  ####################################
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sbb_c?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: '0000'
+
+  ####################################
+  # JPA 설정
+  ####################################
+  jpa:
+    open-in-view: true      # JPA 영속성 컨텍스트를 뷰까지 유지할지 여부
+    hibernate:
+      ddl-auto: update      # create: 실행 시킬때 마다 지움, update: 값을 유지, ...
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # 카멜케이스를 언더스코어로 변환
+    show-sql: true          # SQL 출력 여부
+    properties:
+      hibernate:
+        format_sql: true    # SQL 포맷팅 여부
+
+  servlet:
+    encoding:
+      charset: UTF-8        # 인코딩 설정
+
+  security:
+    user:
+      name: test
+      password: 1111
+      roles: USER
