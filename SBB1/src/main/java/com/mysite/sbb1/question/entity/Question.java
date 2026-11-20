@@ -1,6 +1,8 @@
 package com.mysite.sbb1.question.entity;
 
 import com.mysite.sbb1.answer.entity.Answer;
+import com.mysite.sbb1.audit.BaseEntity;
+import com.mysite.sbb1.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor  //기본 생성자
 @AllArgsConstructor //전체 생성자
 @Builder            // Question.builder().subject(..).build() 형태로 객체를 만들 수 있게 해줌
-public class Question {
+public class Question extends BaseEntity  {
 
     // 기본키(PK). IDENTITY : DB의 auto_increment로 1, 2, 3... 자동 증가
     @Id
@@ -33,7 +35,7 @@ public class Question {
     @Column(columnDefinition = "TEXT")      // 글자 수 제한 없는 TEXT 타입
     private String content; //질문 내용
 
-    private LocalDateTime created; //생성일
+
 
     /**
      * 이 질문에 달린 답변 목록 (1:N 관계, 질문 1개 - 답변 여러 개)
@@ -42,9 +44,12 @@ public class Question {
      * - orphanRemoval = true : 목록에서 빠진 답변은 DB에서도 삭제됨
      * - LAZY : 실제로 answerList를 사용할 때 DB에서 조회함
      */
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answerList;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id",  nullable = false)
+    private Member author;
 
 
 }

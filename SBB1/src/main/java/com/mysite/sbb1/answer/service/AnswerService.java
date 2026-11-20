@@ -30,7 +30,7 @@ public class AnswerService {
         Answer answer = Answer.builder()
                 .content(answerDto.getContent())
                 .question(question)
-                .created(LocalDateTime.now())
+
                 .build();
 
         Answer saved =  answerRespository.save(answer);
