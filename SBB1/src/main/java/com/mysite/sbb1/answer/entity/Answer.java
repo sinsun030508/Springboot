@@ -1,5 +1,8 @@
 package com.mysite.sbb1.answer.entity;
 
+import com.mysite.sbb1.audit.BaseEntity;
+import com.mysite.sbb1.audit.BaseTimeEntity;
+import com.mysite.sbb1.member.entity.Member;
 import com.mysite.sbb1.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor //전체 생성자
 @Builder
-public class Answer {
+public class Answer extends BaseEntity {
 
     // 기본키(PK), auto_increment로 자동 증가
     @Id
@@ -28,7 +31,7 @@ public class Answer {
     @Column(name = "countent", columnDefinition = "TEXT") // DB 컬럼 이름은 기존 그대로 유지
     private String content;
 
-    private LocalDateTime created; // 답변 작성일
+
 
     /**
      * 이 답변이 달린 질문 (N:1 관계, 답변 여러 개 - 질문 1개)
@@ -39,4 +42,8 @@ public class Answer {
     @ManyToOne(fetch = FetchType.LAZY)  // M:1관계
     @JoinColumn(name = "question_id", nullable = false) //포린키
     private Question question;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member author;
 }
