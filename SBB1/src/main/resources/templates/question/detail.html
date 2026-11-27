@@ -1,50 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/layout}">
-<!-- 질문 상세 화면 ( /question/{id} )
-     컨트롤러에서 넘겨준 question(질문 + 답변 목록)과 answerDto(답변 입력 폼)를 사용 -->
 
-<!-- 입력값 검증 에러 메시지를 빨간 글씨로 표시하는 스타일
-     layout.html <head> 안의 css 영역(layout:fragment="css")에 들어감 -->
 <th:block layout:fragment="css">
     <style>
-        .fledError{
-            color:red;
-
+        .fieldError {
+            color: #b02a37;
         }
     </style>
 </th:block>
 
 <div layout:fragment="content" class="container my-3">
-    <!-- 질문 상세 Card -->
+    <!-- 질문 Card -->
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">질문 상세</h4>
+            <h4 class="mb-0" th:text="${question.subject}">제목</h4>
         </div>
-
         <div class="card-body">
-            <h3 class="card-title mb-3"
-                th:text="${question.subject}">제목</h3>
+            <p class="card-text fs-5"
+               style="white-space: pre-wrap;"
+               th:text="${question.content}">내용</p>
 
-            <hr>
+            <!-- 수정 및 작성자 추가 -->
+            <div class="d-flex justify-content-end">
+                <!-- 질문 수정 일시-->
+                <!--<div th:if="${question.updated != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">수정일 :</div>
+                    <div th:text="${#temporals.format(question.updated, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>-->
+                <!-- 질문 작성자 -->
+                <div class="badge bg-warning text-dark p-2 text-start mx-3">
+                    <div class="mb-2">
+                        <span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+                    </div>
+                    <div th:text="${#temporals.format(question.created, 'yyyy-MM-dd HH:mm')}"></div>
+                </div>
+            </div>
 
-            <div class="card-text"
-                 style="white-space: pre-line;"
-                 th:text="${question.content}">내용</div>
+            <!-- 질문 수정 / 삭제 버튼 -->
+            <div class="my-3">
+                <a th:href="@{|/question/modify/${question.id}|}"
+                   class="btn btn-sm btn-outline-primary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and
+                  #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="수정">수정
+                </a>
+                <!-- 페이지 이동없이 삭제 -->
+                <a  href="javascript:void(0);"
+                    th:data-uri="@{|/question/delete/${question.id}|}"
+                    class="delete btn btn-sm btn-outline-danger"
+                    sec:authorize="isAuthenticated()"
+                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                    th:text="삭제">삭제
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- 답변 목록 -->
     <div class="mb-4">
-        <h5 class="mb-3"
-            th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|">
-            0개의 답변이 있습니다.
+        <h5 class="mb-3">
+            답변 목록
+            <span class="badge bg-primary"
+                  th:text="${#lists.size(question.answerList)}">0</span>
         </h5>
 
         <!-- 답변이 없는 경우 -->
         <div th:if="${#lists.isEmpty(question.answerList)}"
-             class="alert alert-light border">
+             class="alert alert-light text-muted border">
             아직 등록된 답변이 없습니다.
         </div>
 
@@ -54,24 +80,58 @@
 
             <div class="card-body">
                 <p class="card-text mb-0"
-                   style="white-space: pre-line;"
+                   style="white-space: pre-wrap;"
                    th:text="${answer.content}">
                     답변 내용
                 </p>
+
+                <!-- 수정일 및 작성자 정보 -->
+                <div class="d-flex justify-content-end">
+                    <!-- 답변 수정 일시-->
+                    <!--<div th:if="${answer.updated != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                        <div class="mb-2">수정일 :</div>
+                        <div th:text="${#temporals.format(answer.updated, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>-->
+
+                    <!-- 답변 작성자 -->
+                    <div class="badge bg-info text-dark p-2 text-start mx-3">
+                        <div class="mb-2">
+                            <span th:if="${answer.author != null}" th:text="${answer.author.username}"></span>
+                        </div>
+                        <div th:text="${#temporals.format(answer.created, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+                </div>
+
+                <!-- 답변 수정/삭제 버튼 추가 -->
+                <div class="my-3">
+                    <!-- 답변 수정 버튼 -->
+                    <a th:href="@{|/answer/modify/${answer.id}|}"
+
+                       sec:authorize="isAuthenticated()"
+                       th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                       th:text="수정"></a>
+
+                    <!-- 답변 삭제 버튼 -->
+                    <a href="javascript:void(0);"
+                       th:data-uri="@{|/answer/delete/${answer.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary"
+                       sec:authorize="isAuthenticated()"
+                       th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                       th:text="삭제">
+                    </a>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- 답변 등록 Card -->
+    <!-- 답변 작성 Card -->
     <div class="card shadow-sm">
         <div class="card-header bg-light">
-            <h5 class="mb-0">답변 등록</h5>
+            <h5 class="mb-0">답변 작성</h5>
         </div>
 
         <div class="card-body">
-            <!-- 답변 등록 폼 : POST /answer/create/{질문id} 로 전송
-                 th:object="${answerDto}" → 아래 *{content}는 answerDto.content를 뜻함 -->
             <form th:action="@{|/answer/create/${question.id}|}"
                   th:object="${answerDto}"
                   method="post">
@@ -80,17 +140,25 @@
                     <label for="content" class="form-label">
                         답변 내용
                     </label>
-
-                    <textarea class="form-control"
-                              rows="5"
-                              id="content"
-                              name="content"
-                              placeholder="답변을 입력해 주세요."
-                              th:field="*{content}"
-                              >
+                    <textarea
+                            sec:authorize="isAnonymous()" disabled
+                            id="content"
+                            name="content"
+                            class="form-control"
+                            rows="6"
+                            placeholder="답변을 입력해주세요."
+                            th:field="*{content}"                            >
                     </textarea>
-                    <!-- 내용이 비어 있으면 AnswerDto의 @NotEmpty 메시지를 표시 -->
-                    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fledError">error</p>
+                    <textarea
+                            sec:authorize="isAuthenticated()"
+                            id="content"
+                            name="content"
+                            class="form-control"
+                            rows="6"
+                            placeholder="답변을 입력해주세요."
+                            th:field="*{content}"                            >
+                    </textarea>
+                    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">error</p>
                 </div>
 
                 <div class="text-end">
@@ -98,10 +166,24 @@
                         답변 등록
                     </button>
                 </div>
-
             </form>
         </div>
     </div>
-
 </div>
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // 삭제 버튼 클릭 이벤트
+            $('.delete').click(function () {
+                if (confirm('정말 삭제하시겠습니까?')) {
+                    const uri = $(this).data('uri');
+                    window.location.href = uri;
+                }
+            });
+
+        });
+    </script>
+</th:block>
+
 </html>

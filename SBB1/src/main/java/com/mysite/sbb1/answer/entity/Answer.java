@@ -40,10 +40,9 @@ public class Answer extends BaseEntity {
      */
     //FetchType fetch() default FetchType.EAGER; 조인
     @ManyToOne(fetch = FetchType.LAZY)  // M:1관계
-    @JoinColumn(name = "question_id", nullable = false) //포린키
     private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member author;
 }

@@ -11,11 +11,11 @@ public class AuditorAwareImple implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         String userId = "";
-        if(authentication != null){
+        if(authentication != null) {
             userId = authentication.getName();
         }
-
-        return Optional.empty();
+        return Optional.of(userId);
     }
 }

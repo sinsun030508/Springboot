@@ -4,6 +4,7 @@ import com.mysite.sbb1.member.constant.MemberRole;
 import com.mysite.sbb1.member.dto.MemberDto;
 import com.mysite.sbb1.member.entity.Member;
 import com.mysite.sbb1.member.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,5 +57,11 @@ public class MemberService implements UserDetailsService {
         }
 
         return new User(member.getUsername(), member.getPassword(), authorities);
+    }
+
+    public Member getMember(String username) {
+        Member member = memberRepository.findByusername(username)
+                .orElseThrow(() -> new EntityNotFoundException("해당 사용자를 찾을 수 없습니다 : " + username));
+        return member;
     }
 }
